@@ -1,5 +1,5 @@
 variables:
-  IMAGE_NAME: ${REGISTRY_SERVER}/openshift4/machine-os-content
+  IMAGE_NAME: ${REGISTRY_SERVER}/ruining/vscode-remote
 stages:
   - build
   - publish

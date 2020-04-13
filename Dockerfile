@@ -5,8 +5,8 @@ ENV container docker
 
 RUN pip install ansible_alicloud
 
-COPY vscode-remote.yaml /tmp/vscode-remote.yaml
-RUN ansible-playbook /tmp/vscode-remote.yaml
+COPY vscode-remote.yaml /opt/vscode-remote.yaml
+RUN ansible-playbook /opt/vscode-remote.yaml
 
 VOLUME [ "/sys/fs/cgroup", "/tmp", "/run" ]
 CMD ["/usr/sbin/init"]

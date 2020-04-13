@@ -1,9 +1,6 @@
 variables:
-  # REGISTRY_USERNAME - secret variable 
-  # REGISTRY_PASSWORD - secret variable
-  # REGISTRY_SERVER - secret variable
-  BUILDAH_FORMAT: docker
-  IMAGE_NAME: "${REGISTRY_SERVER}"/ruining/vscode-remote
+  IMAGE_NAME: ${REGISTRY_SERVER}/openshift4/machine-os-content
+stages:
   - build
   - publish
 container:

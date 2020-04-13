@@ -36,7 +36,7 @@
       line: 'StreamLocalBindUnlink yes'
   - name: Install OpenShift Clinet
     unarchive:
-      src: https://github.com/openshift/oc/archive/openshift-clients-4.5.0-202004110717.tar.gz
+      src: https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/oc/latest/linux/oc.tar.gz
       dest: /usr/bin
       remote_src: yes
   - name: Create a symbolic link

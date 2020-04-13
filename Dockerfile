@@ -3,7 +3,7 @@ MAINTAINER http://fedoraproject.org/wiki/Cloud
 
 ENV container docker
 
-RUN pip install ansible_alicloud
+RUN dnf install -y python3-pip && pip install ansible_alicloud
 
 COPY vscode-remote.yaml /opt/vscode-remote.yaml
 RUN ansible-playbook /opt/vscode-remote.yaml

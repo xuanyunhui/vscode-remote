@@ -25,12 +25,6 @@
       create_home: no
       groups: wheel
       append: yes
-  - name: Set authorized keys 
-    authorized_key:
-      user: coder
-      state: present
-      key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXYJFJUvLdy5YF3ogWgMl8+5Zau6dmvWdFH0KTx8wM5YmUyWm29n85unWDoQ6DVEGrlCdSDwWJj7SDxzNVZC5OyF0PESFinr8rdThUnCIFmO2LudFs2ZdF2A/wbmqAFsI11UqVtd2/Q7ZWUZPEH/ssETpwx7GZPGjEW8i5ZXW5Di/qlr9f4OsfDPcC3kQ3vwGSEeeTmhry4o11085HA5F6L4O+XzRAxW4xYbMtzrSqaBA/IayAi8+BWCR+t3XtCwRJ9a2K92ZppF1hRTSkLPn2NugFdQiL27V3M6jAk5zb1HOyyvH4AsZkJgCS7ebsTpzJN+jUujnNNjvldJ271aPN cardno:000610395501' 
-      manage_dir: yes
   - lineinfile: 
       dest: /etc/sudoers 
       state: present 

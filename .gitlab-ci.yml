@@ -3,7 +3,7 @@ variables:
   # REGISTRY_PASSWORD - secret variable
   # REGISTRY_SERVER - secret variable
   BUILDAH_FORMAT: docker
-  IMAGE_NAME: ${REGISTRY_SERVER}/ruining/vscode-remote
+  IMAGE_NAME: "${REGISTRY_SERVER}"/ruining/vscode-remote
   - build
   - publish
 container:

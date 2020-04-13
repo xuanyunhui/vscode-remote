@@ -16,19 +16,6 @@
         - zsh
         - kmod
       state: latest
-  - name: ensure openssh sever is running
-    service:
-      name: sshd
-      state: started
-  - name: ensure systemd-logind is running
-    systemd:
-      name: "{{ item }}"
-      masked: no
-      enabled: yes
-      state: restarted
-    loop:
-      - systemd-logind
-      - systemd-user-sessions
   - name: Add the user 'coder' with a specific uid 
     user:
       name: coder
@@ -53,8 +40,6 @@
       dest: /etc/ssh/sshd_config
       state: present 
       line: 'StreamLocalBindUnlink yes'
-    notify:
-    - restart sshd
   - name: Install OpenShift Clinet
     unarchive:
       src: https://github.com/openshift/oc/archive/openshift-clients-4.5.0-202004110717.tar.gz

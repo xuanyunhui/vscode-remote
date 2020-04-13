@@ -1,0 +1,154 @@
+- hosts: localhost
+  pre_tasks:
+  - name: Download fedora.repo
+    get_url:
+      url: http://mirrors.aliyun.com/repo/fedora.repo 
+      dest: /etc/yum.repos.d/fedora.repo
+  - name: Download fedora.repo
+    get_url:
+      url: http://mirrors.aliyun.com/repo/fedora-updates.repo 
+      dest: /etc/yum.repos.d/fedora-updates.repo
+  tasks:
+  - name: ensure openssh server is at the latest version
+    dnf:
+      name:
+        - openssh-server
+        - zsh
+        - kmod
+      state: latest
+  - name: ensure openssh sever is running
+    service:
+      name: sshd
+      state: started
+  - name: ensure systemd-logind is running
+    systemd:
+      name: "{{ item }}"
+      masked: no
+      enabled: yes
+      state: restarted
+    loop:
+      - systemd-logind
+      - systemd-user-sessions
+  - name: Add the user 'coder' with a specific uid 
+    user:
+      name: coder
+      comment: vscode remote user
+      uid: 1000
+      shell: /usr/bin/zsh
+      create_home: no
+      groups: wheel
+      append: yes
+  - name: Set authorized keys 
+    authorized_key:
+      user: coder
+      state: present
+      key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXYJFJUvLdy5YF3ogWgMl8+5Zau6dmvWdFH0KTx8wM5YmUyWm29n85unWDoQ6DVEGrlCdSDwWJj7SDxzNVZC5OyF0PESFinr8rdThUnCIFmO2LudFs2ZdF2A/wbmqAFsI11UqVtd2/Q7ZWUZPEH/ssETpwx7GZPGjEW8i5ZXW5Di/qlr9f4OsfDPcC3kQ3vwGSEeeTmhry4o11085HA5F6L4O+XzRAxW4xYbMtzrSqaBA/IayAi8+BWCR+t3XtCwRJ9a2K92ZppF1hRTSkLPn2NugFdQiL27V3M6jAk5zb1HOyyvH4AsZkJgCS7ebsTpzJN+jUujnNNjvldJ271aPN cardno:000610395501' 
+      manage_dir: yes
+  - lineinfile: 
+      dest: /etc/sudoers 
+      state: present 
+      regexp: '^%wheel' 
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+  - lineinfile: 
+      dest: /etc/ssh/sshd_config
+      state: present 
+      line: 'StreamLocalBindUnlink yes'
+    notify:
+    - restart sshd
+  - name: Install OpenShift Clinet
+    unarchive:
+      src: https://github.com/openshift/oc/archive/openshift-clients-4.5.0-202004110717.tar.gz
+      dest: /usr/bin
+      remote_src: yes
+  - name: Create a symbolic link
+    file:
+      src: /usr/bin/oc
+      dest: /usr/bin/kubectl
+      state: link
+  - name: ensure addition packages are at the latest version
+    dnf:
+      name:
+        - openssh-clients
+        - procps-ng
+        - which 
+        - cracklib-dicts 
+        - passwd 
+        - tree 
+        - dnf-plugins-core 
+        - langpacks-en.noarch 
+        - langpacks-zh_CN.noarch
+        - java-11-openjdk-devel
+        - maven
+        - git
+        - golang
+        - skopeo 
+        - iputils 
+        - net-tools 
+        - bind-utils 
+        - unzip 
+        - wget
+        - vim-enhanced 
+        - jq 
+        - podman 
+        - buildah 
+        - cekit 
+        - make 
+        - fuse-overlayfs 
+        - python3-odcs-client
+        - python3-pycryptodomex
+        - python3-boto
+        - ostree
+        - rpm-ostree
+        - yum-utils
+        - selinux-policy-targeted
+      state: latest
+  - name: ensure addition packages are at the latest version
+    dnf:
+      name:
+        - python2
+      state: absent
+  - name: Check that the tkn exists
+    stat:
+      path: /usr/bin/tkn
+    register: stat_result
+  - name: Install Tekton Clinet
+    unarchive:
+      src: https://github.com/tektoncd/cli/releases/download/v0.8.0/tkn_0.8.0_Linux_x86_64.tar.gz
+      dest: /usr/bin/
+      remote_src: yes
+    when: stat_result.stat.exists == False
+  - name: Check that the terraform exists
+    stat:
+      path: /usr/bin/terraform
+    register: stat_result
+  - name: Install Terraform CLI
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/0.12.20/terraform_0.12.20_linux_amd64.zip
+      dest: /usr/bin/
+      remote_src: yes
+    when: stat_result.stat.exists == False
+  - name: Check that the s2i exists
+    stat:
+      path: /usr/bin/s2i
+    register: stat_result
+  - name: Install Source To Image Tools
+    unarchive:
+      src: https://github.com/openshift/source-to-image/releases/download/v1.2.0/source-to-image-v1.2.0-2a579ecd-linux-amd64.tar.gz 
+      dest: /usr/bin/
+      remote_src: yes
+    when: stat_result.stat.exists == False
+  - name: Check that the Helm exists
+    stat:
+      path: /usr/bin/helm
+    register: stat_result
+  - name: Install Helm Cli
+    unarchive:
+      src: https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
+      dest: /usr/bin/
+      remote_src: yes
+    when: stat_result.stat.exists == False
+  - name: fs.inotify.max_user_watches
+    sysctl:
+      value: '524288'
+      sysctl_set: yes
+      state: yes

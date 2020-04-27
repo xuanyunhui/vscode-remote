@@ -20,6 +20,15 @@
         - zsh
         - kmod
       state: latest
+  - name: Add the user 'coder' with a specific uid 
+    user:
+      name: coder
+      comment: vscode remote user
+      uid: 1000
+      shell: /usr/bin/zsh
+      create_home: yes
+      groups: wheel
+      append: yes
   - lineinfile: 
       dest: /etc/sudoers 
       state: present 

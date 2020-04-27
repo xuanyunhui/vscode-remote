@@ -10,10 +10,10 @@
       url: http://mirrors.aliyun.com/repo/fedora-updates.repo 
       dest: /etc/yum.repos.d/fedora-updates.repo
   tasks:
-  - sysctl:
-      name: fs.inotify.max_user_watches
-      value: '524288'
-      state: present
+  - lineinfile: 
+      dest: /etc/sysctl.conf
+      state: present 
+      line: 'fs.inotify.max_user_watches=524288'
   - name: ensure openssh server is at the latest version
     dnf:
       name:

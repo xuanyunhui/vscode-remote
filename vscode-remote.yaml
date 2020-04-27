@@ -1,4 +1,5 @@
 - hosts: localhost
+  connection: local
   pre_tasks:
   - name: Download fedora.repo
     get_url:

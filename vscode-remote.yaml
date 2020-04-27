@@ -132,3 +132,9 @@
       dest: /usr/bin/helm
       mode: '0644'
     when: stat_result.stat.exists == False
+  - name: Give insecure permissions to an existing file
+    file:
+      path: /usr/bin
+      owner: root
+      group: root
+      mode: '0755'

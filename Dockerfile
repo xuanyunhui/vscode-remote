@@ -1,4 +1,4 @@
-FROM quay.xiaodiankeji.net/ruining/vscode-remote:base
+FROM registry-vpc.cn-beijing.aliyuncs.com/xdmirrors/fedora:latest
 MAINTAINER http://fedoraproject.org/wiki/Cloud
 
 ENV container docker

@@ -130,7 +130,7 @@
     get_url:
       url: https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/helm/latest/helm-linux-amd64
       dest: /usr/bin/helm
-      mode: '0644'
+      mode: '0755'
     when: stat_result.stat.exists == False
   - name: Give insecure permissions to an existing file
     file:

@@ -9,10 +9,10 @@
       url: http://mirrors.aliyun.com/repo/fedora-updates.repo 
       dest: /etc/yum.repos.d/fedora-updates.repo
   tasks:
-#  - sysctl:
-#      name: fs.inotify.max_user_watches
-#      value: '524288'
-#      state: present
+  - sysctl:
+      name: fs.inotify.max_user_watches
+      value: '524288'
+      state: present
   - name: ensure openssh server is at the latest version
     dnf:
       name:
@@ -75,6 +75,7 @@
         - rpm-ostree
         - yum-utils
         - selinux-policy-targeted
+        - rsync
       state: latest
   - name: ensure addition packages are at the latest version
     dnf:
@@ -88,7 +89,7 @@
   - name: Install Tekton Clinet
     unarchive:
       src: https://github.com/tektoncd/cli/releases/download/v0.8.0/tkn_0.8.0_Linux_x86_64.tar.gz
-      dest: /usr/bin/
+      dest: /usr/bin/tkn
       remote_src: yes
     when: stat_result.stat.exists == False
   - name: Check that the terraform exists
@@ -98,7 +99,7 @@
   - name: Install Terraform CLI
     unarchive:
       src: https://releases.hashicorp.com/terraform/0.12.20/terraform_0.12.20_linux_amd64.zip
-      dest: /usr/bin/
+      dest: /usr/bin/terraform
       remote_src: yes
     when: stat_result.stat.exists == False
   - name: Check that the s2i exists
@@ -108,7 +109,7 @@
   - name: Install Source To Image Tools
     unarchive:
       src: https://github.com/openshift/source-to-image/releases/download/v1.2.0/source-to-image-v1.2.0-2a579ecd-linux-amd64.tar.gz 
-      dest: /usr/bin/
+      dest: /usr/bin/s2i
       remote_src: yes
     when: stat_result.stat.exists == False
   - name: Check that the Helm exists
@@ -118,6 +119,6 @@
   - name: Install Helm Cli
     unarchive:
       src: https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
-      dest: /usr/bin/
+      dest: /usr/bin/helm
       remote_src: yes
     when: stat_result.stat.exists == False

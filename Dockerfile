@@ -40,7 +40,8 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == system
     rm -f /lib/systemd/system/basic.target.wants/*;\
     rm -f /lib/systemd/system/anaconda.target.wants/*;
 
-RUN echo 'StreamLocalBindUnlink yes' |tee -a /etc/ssh/sshd_config && \
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
+    echo 'StreamLocalBindUnlink yes' |tee -a /etc/ssh/sshd_config && \
     sed -i 's/#ForwardToConsole=no/ForwardToConsole=yes/' /etc/systemd/journald.conf && \
     echo 'fs.inotify.max_user_watches=524288' |tee -a /etc/sysctl.conf && \
     ssh-keygen -A && \

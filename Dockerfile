@@ -1,4 +1,4 @@
-FROM quay.xiaodiankeji.net/grizzlybear/fedora:32
+FROM fedora:32
 MAINTAINER http://fedoraproject.org/wiki/Cloud
 
 ENV LANG=zh_CN.UTF-8

@@ -7,6 +7,7 @@ RUN cp /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora.repo.backup && \
     cp /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-updates.repo.backup && \
     sed -i "s/#baseurl/baseurl/g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo && \
     sed -i "s/mirrorlist/#mirrorlist/g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo && \
+    sed -i "s/metalink/#metalink/g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo && \
     sed -i "s@http://download.fedoraproject.org/pub/fedora/linux@https://mirrors.huaweicloud.com/fedora@g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo
 
 RUN yum reinstall -y shadow-utils systemd rpm yum-utils selinux-policy-targeted
@@ -17,7 +18,7 @@ RUN SERVER_PKGS="openssh-server openssh-clients procps-ng which cracklib-dicts p
     PYTHON_PKGS="python3-pip python3-odcs-client python3-pycryptodomex python3-boto" && \
     SHELL_PKGS="iproute sudo wget skopeo iputils net-tools bind-utils unzip vim-enhanced jq podman buildah cekit make fuse-overlayfs man rpm-ostree ostree rsync diffutils" && \
     INSTALL_PKGS="$SERVER_PKGS $JAVA_PKGS $SHELL_PKGS $GO_PKGS $PYTHON_PKGS" && \
-    yum -y update; yum -y install $INSTALL_PKGS; rm -rf /var/cache /var/log/dnf* /var/log/yum.*;
+    yum -y update; yum -y install INSTALL_PKGS; rm -rf /var/cache /var/log/dnf* /var/log/yum.*;
 
 RUN pip install ansible_alicloud
 

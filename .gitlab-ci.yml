@@ -4,6 +4,9 @@ stages:
   - build
   - publish
 container:
+  only:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^\[Build Image\].*/
   stage: publish
   image: quay.xiaodiankeji.net/buildah/stable:latest
   before_script:

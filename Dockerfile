@@ -52,4 +52,5 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 
 ENV BUILDAH_ISOLATION=chroot
 
+VOLUME [ "/sys/fs/cgroup", "/tmp", "/run" ]
 CMD ["/usr/sbin/init"]

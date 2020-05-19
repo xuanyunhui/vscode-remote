@@ -3,17 +3,9 @@ MAINTAINER http://fedoraproject.org/wiki/Cloud
 
 ENV LANG=zh_CN.UTF-8
 
-RUN cp /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora.repo.backup && \
-    cp /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-updates.repo.backup && \
-    sed -i "s/#baseurl/baseurl/g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo && \
-    sed -i "s/mirrorlist/#mirrorlist/g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo && \
-    sed -i "s/metalink/#metalink/g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo && \
-    sed -i "s@http://download.fedoraproject.org/pub/fedora/linux@https://mirrors.huaweicloud.com/fedora@g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo && \
-    sed -i "s@http://download.example/pub/fedora/linux@https://mirrors.huaweicloud.com/fedora@g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo
+RUN yum reinstall -y shadow-utils systemd rpm
 
-RUN yum reinstall -y shadow-utils systemd rpm yum-utils selinux-policy-targeted
-
-RUN SERVER_PKGS="openssh-server openssh-clients procps-ng which cracklib-dicts passwd zsh tree dnf-plugins-core langpacks-en.noarch langpacks-zh_CN.noarch" && \
+RUN SERVER_PKGS="openssh-server openssh-clients procps-ng which cracklib-dicts passwd selinux-policy-targeted yum-utils zsh tree dnf-plugins-core langpacks-en.noarch langpacks-zh_CN.noarch" && \
     JAVA_PKGS="java-11-openjdk-devel maven git" && \
     GO_PKGS="golang golang-x-tools-goimports golang-x-tools-gopls" && \
     PYTHON_PKGS="python3-pip python3-odcs-client python3-pycryptodomex python3-boto" && \

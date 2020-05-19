@@ -3,11 +3,12 @@ MAINTAINER http://fedoraproject.org/wiki/Cloud
 
 ENV LANG=zh_CN.UTF-8
 
-RUN mv /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora.repo.backup && \
-    mv /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-updates.repo.backup && \
-    curl -o /etc/yum.repos.d/fedora.repo http://mirrors.aliyun.com/repo/fedora.repo && \
-    curl -o /etc/yum.repos.d/fedora-updates.repo http://mirrors.aliyun.com/repo/fedora-updates.repo
-    
+RUN cp /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora.repo.backup && \
+    cp /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-updates.repo.backup && \
+    sed -i "s/#baseurl/baseurl/g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo && \
+    sed -i "s/metalink/#metalink/g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo && \
+    sed -i "s@http://download.fedoraproject.org/pub/fedora/linux@https://mirrors.huaweicloud.com/fedora@g" /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-modular.repo /etc/yum.repos.d/fedora-updates-modular.repo
+
 RUN yum reinstall -y shadow-utils systemd rpm yum-utils selinux-policy-targeted
 
 RUN SERVER_PKGS="openssh-server openssh-clients procps-ng which cracklib-dicts passwd zsh tree dnf-plugins-core langpacks-en.noarch langpacks-zh_CN.noarch" && \
